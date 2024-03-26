@@ -4,6 +4,7 @@ import { Metadata } from 'next';
 import { Inter, Space_Grotesk } from 'next/font/google';
 import { ThemeProvider } from '@/context/ThemeProvider';
 
+
 const inter = Inter({
   subsets: ['latin'],
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
@@ -19,7 +20,7 @@ const spaceGrotesk = Space_Grotesk({
 export const metadata: Metadata = {
   title: 'OpenStack',
   description: 'Unleash your potential with AIHubPro! Explore cutting-edge tools, dive into engaging discussions, and propel your AI journey forward.',
-  icons: '/logo.svg', 
+  icons: '/public/logo.png',
 };
 
 export default function RootLayout({
@@ -27,25 +28,21 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }){
-
-
-  return (
-    
+    return (
       <html lang="en">
         <body className={`${inter.variable} ${spaceGrotesk.variable}`}>
-        <ClerkProvider
-          appearance={{
-          elements: {
-             formButtonPrimary: 'primary-gradient',
-             footerActionLink: 'primary-text-gradient hover:text-primary-500',
-        },
-      }}
-    >
-        <ThemeProvider>
-        {children}
-          </ThemeProvider>
+          <ClerkProvider
+            appearance={{
+              elements: {
+                formButtonPrimary: "primary-gradient",
+                footerActionLink: "primary-text-gradient hover:text-primary-500",
+              },
+            }}
+          >
+            <ThemeProvider>{children}</ThemeProvider>
           </ClerkProvider>
         </body>
       </html>
-  );
-}
+    );
+  }
+  
