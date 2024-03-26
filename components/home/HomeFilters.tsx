@@ -1,38 +1,53 @@
-"use client"
+"use client";
+
 import { HomePageFilters } from "@/constants/filters";
 import React, { useState } from "react";
 import { Button } from "../ui/button";
 import { useRouter, useSearchParams } from "next/navigation";
+import { formUrlQuery } from "@/lib/utils";
 
 const HomeFilters = () => {
-  // Assuming you have some state for the filters
-  const [selectedFilter, setSelectedFilter] = useState("");
-
-  // Assuming you have some items for the filters
-  const filters = HomePageFilters;
-
-  // Assuming you have a router for navigation
+  const searchParams = useSearchParams();
   const router = useRouter();
 
-  // Assuming you're using search params
-  const searchParams = useSearchParams();
+  const [active, setActive] = useState("");
 
-  const handleFilterClick = (item) => {
-    setSelectedFilter(item.value);
-    // Perform any action you need, such as navigating or updating search params
-    // Example:
-    // router.push(`/?filter=${item.value}`);
+  const handleTypeClick = (item: string) => {
+    if (active === item) {
+      setActive("");
+
+      const newUrl = formUrlQuery({
+        params: searchParams.toString(),
+        key: "filter",
+        value: null,
+      });
+
+      router.push(newUrl, { scroll: false });
+    } else {
+      setActive(item);
+
+      const newUrl = formUrlQuery({
+        params: searchParams.toString(),
+        key: "filter",
+        value: item.toLowerCase(),
+      });
+
+      router.push(newUrl, { scroll: false });
+    }
   };
 
   return (
     <div className="mt-10 hidden flex-wrap gap-3 md:flex">
-      {filters.map((item) => (
+      {HomePageFilters.map((item) => (
         <Button
           key={item.value}
-          onClick={() => handleFilterClick(item)}
+          onClick={() => {}}
           className={`body-medium rounded-lg px-6 py-3 capitalize shadow-none ${
-            selectedFilter === item.value ? "bg-blue-500 text-white" : "bg-gray-200"
+            active === item.value
+              ? "bg-primary-100 text-primary-500 hover:bg-primary-100 dark:bg-dark-400 dark:text-primary-500 dark:hover:bg-dark-400"
+              : "bg-light-800 text-light-500 hover:bg-light-800 dark:bg-dark-300 dark:text-light-500 dark:hover:bg-dark-300"
           }`}
+          onClickCapture={() => handleTypeClick(item.value)}
         >
           {item.name}
         </Button>
